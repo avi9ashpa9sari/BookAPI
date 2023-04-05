@@ -10,6 +10,15 @@ namespace BookAPI.Model
 
         }
 
-        public DbSet<Book> Books { get; set;} 
+        public DbSet<Book> Books { get; set;}
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer("constring", builder =>
+            {
+                builder.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
+            });
+            base.OnConfiguring(optionsBuilder);
+        }
     }
 }
